@@ -19,6 +19,8 @@ As "calses" do projeto estão estruturadas em três ficheiros, o jogo, que é on
 
 Depois o ficheiro ini.c realiza a  leitura no ficheiro config para chamar as variáveis pedidas no exercicio e assim poder mudar as regras do jogo, tipo numero de agentes, tamanho da grelha etc.
 
+[JOGO.svg]
+
 ### Data structures
 
 O jogo tem as estructuras dos agentes, do world, do simpleshowworld etc, que basicamente guardam os dados dos diferentes tipos, de forma a que quando se quer a informaçao de cada clase so temos que chamar as funçoes caracteristicas da clase e obtemos os dados dessa clase. 
