@@ -19,7 +19,7 @@ As "calses" do projeto estão estruturadas em três ficheiros, o jogo, que é on
 
 Depois o ficheiro ini.c realiza a  leitura no ficheiro config para chamar as variáveis pedidas no exercicio e assim poder mudar as regras do jogo, tipo numero de agentes, tamanho da grelha etc.
 
-(JOGO.svg)
+[Architecture do codigo](JOGO.svg)
 
 ### Data structures
 
