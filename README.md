@@ -1,4 +1,4 @@
-﻿# Title of project
+﻿# Zombies Faca
 
 * Alejandro Urcera Martins 1 - a21703818
 * Andre Duarte Cosme  2 - a21702744
