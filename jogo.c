@@ -38,7 +38,7 @@
 #include "raylib.h"
 #include "ini.h"
 
-/**Struct de agents onde imos a mexer os agentes que van a estar depois na 
+/**Struct de agents onde vamos mexer os agentes que depois vao estar na 
  * grelha do jogo.
  */
 struct agentID {
@@ -50,7 +50,7 @@ struct agentID {
 };
 
 /**
- * Struct para recolher as variabeis do ficheiro ini.h 
+ * Struct para recolher as variaveis do ficheiro ini.h 
  */
 typedef struct {
     int xdim;
@@ -65,8 +65,8 @@ typedef struct {
 
 
 /**
- * Funcao que crea o movemento toroidal da grelha, se um agente esta num lado
- *  da grelha pasa para o lado oposto.
+ * Funcao para criar o movimento toroidal da grelha, se um agente esta num lado
+ *  da grelha passa para o lado oposto.
  * @param x
  * @param y
  * @param toro
@@ -75,8 +75,8 @@ typedef struct {
 void toroidal(int *x, int *y, int *toro, int *na);
 
 /**
- * Funcao intermedia entre distancia e toroidal que recolhe a posicao do agente
- * na grelha para indicar as outras funcoes o tipo de movemento que deven fazer. 
+ * Funcao intermedia entre a distancia e o toroidal que recebe a posicao do agente
+ * na grelha para indicar as outras funcoes e o tipo de movimento que devem fazer. 
  * @param xN
  * @param yN
  * @param xNovo
@@ -89,7 +89,7 @@ void MoveToroidal(int xN, int yN, int xNovo, int yNovo, int *movein, int *movedi
 
 /**
  * funcao distancia verifica a distancia entre dois agentes e realiza o 
- * movemento do humano ou zombie con as suas caracteristicas
+ * movimento do humano ou zombie com as suas caracteristicas
  * @param x
  * @param y
  * @param xNovo
@@ -114,7 +114,7 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
 unsigned int example_get_ag_info(void *w, unsigned int x, unsigned int y);
 
 /**
- * funcao que vai leer o ficheiro ini.h 
+ * funcao que vai ler o ficheiro ini.h 
  * @param user
  * @param section
  * @param name
@@ -139,14 +139,14 @@ int main(int argc, char **argv) {
     /**inicialicamos o world*/
     WORLD *w = NULL;
 
-    /**inicializamos struct para leer do ini*/
+    /**inicializamos a struct para ler do ini*/
     configuration config;
     if (ini_parse("config.ini", handler, &config) < 0) {
         printf("Não foi possível encontrar o ficheiro 'config.ini'\n");
         return 1;
     }
 
-    /**numero agentes formado por humas e zombies*/
+    /**numero de agentes formados por humanos e zombies*/
     int nagents = config.nhumans + config.nzombies;
 
     /**Inicialicamos struct de agentes a 0*/
@@ -162,19 +162,19 @@ int main(int argc, char **argv) {
 
     /**Criamos o showworld e pasamoslhe x y da grelha e a info do agente
      * chamando a funcao showworld_new que vai fazer um malloc.
-     * Tamben vai a gerar a janela da libreria raylib.*/
+     * Tambem vai a gerar a janela da biblioteca raylib.*/
     SHOWWORLD *sw = showworld_new(config.xdim, config.ydim, example_get_ag_info);
 
-    /**Criamos o World pasandolhe o x e o y definidos no ini chamando a world
+    /**Criamos o World passandolhe o x e o y definidos no ini chamando o world
      *  new que vai fazer */
     w = world_new(config.xdim, config.ydim);
 
-    /** Funcao para fazer numeros aleatorios que nao correm 
+    /** Funcao para gerar numeros aleatorios que nao correm 
      * predeterminadamente. */
     srand(time(NULL));
 
-    /** Recorremos a variavel nagents que van a ser o noso numero de agentes na
-     *grelha e os guardaremos na grelha e na struct de agentes*/
+    /** Recorremos a variavel nagents que vao ser o nosso numero de agentes na
+     *grelha e guardamolos na grelha e na struct de agentes*/
     for (int i = 0; i < nagents; i++) {
         int x, y;
         AGENT_TYPE at;
@@ -183,8 +183,8 @@ int main(int argc, char **argv) {
         x = (rand() % config.xdim);
         y = (rand() % config.ydim);
 
-        /** Se no x e o y que recolhe a grelha nao esta nenhum agente entao 
-         * metemos um, resta um valor a variavel para que nao saltemos nenhm
+        /** Se no x e o y que recebe a grelha nao esta nenhum agente entao 
+         * metemos um, resta um valor a variavel para que nao saltemos nenhum
          * valor de agente */
         if (world_get(w, x, y) == NULL) {
             /**Recolhemos os humanos e zombies que vamos ter na grelha, que os
@@ -195,20 +195,20 @@ int main(int argc, char **argv) {
                 at = Zombie;
             }
 
-            /**Criamos uma variavel random para dezir se o agente e controlavel
-             con setas ou IA*/
+            /**Criamos uma variavel random para dizer se o agente e controlavel
+             com setas ou IA*/
             unsigned int playable = (rand() % 10 == 0);
 
             /**Criamos o agente novo pasandolhe typo (human/zombie) id e
              * playavel se o agente e jogavel ou nao*/
             AGENT *a = agent_new(at, i, playable);
             /**Metemos o agent no world pasandolhe X, Y e o agente, que o 
-             pasaremos como um item para que seja uma funcao mais generica*/
+             passaremos como um item para que seja uma funcao mais generica*/
             world_put(w, x, y, (ITEM *) a);
 
-            /**Agora pasaremoslhe as mesmas cosas o noso agent da struct, e 
-             * dicir, duplicamos a informacao para logo poder mexer na struc
-             * e pasar o movemento na grelha*/
+            /**Agora passaremoslhe as mesmas coisas o nosso agent da struct, e 
+             * dizer, duplicamos a informacao para logo poder mexer na struc
+             * e pasar o movimento na grelha*/
             agents[i].id = i;
             agents[i].x = x;
             agents[i].y = y;
@@ -220,18 +220,18 @@ int main(int argc, char **argv) {
 
     }
 
-    /** Fazemos um update do world para que se veia o primeiro turno como e que
-     *  empeca a partida*/
+    /** Fazemos um update do world para que se veio o primeiro turno como e que
+     *  comeca a partida*/
     showworld_update(sw, w);
     printf("Pressione ENTER para o seguinte turno...");
     getchar();
     printf("\n");
 
-    /** Criamos um sistema de turnos que vai ir de 0 a 1000*/
+    /** Criamos um sistema de turnos que vai de 0 a 1000*/
     for (int turn = 0; turn < config.maxturns - 1; turn++) {
-        /**Funcao que faz o shuffle da struct onde cada turno, vai a ordear
-         * aleatoriamente os elementos da estruct de forma que os movementos
-         * dos agentes nao seran iguais em nenhum turno*/
+        /**Funcao que faz o shuffle da struct onde cada turno, vai a ordenar
+         * aleatoriamente os elementos da estruct de forma que os movimentos
+         * dos agentes nao serao iguais em nenhum turno*/
         for (int i1 = nagents - 1; i1 > 0; i1--) {
             int index = rand() % i1;
             struct agentID temp = agents[index];
@@ -247,11 +247,11 @@ int main(int argc, char **argv) {
         printf("\n\n");
 
         /**Inicializacao de variaveis
-         * A variavel move vai ser para realicar a vecinhanca de moore.
+         * A variavel move vai ser para executar a vezinhanca de moore.
          */
         int move;
         /** XYprincipal sao variaveis para guardar as posicaos iniciais dos
-         *  agentes antes de mexer de posicao, serve por se nao precisamos
+         *  agentes antes de mexer de posicao, serve por que se nao precisamos
          *  de mudar a posicao do agente*/
         int xPrincipal = 0;
         int yPrincipal = 0;
@@ -259,55 +259,55 @@ int main(int argc, char **argv) {
          *  poder aumentar o diminuir o x e o y*/
         int xNovo = 0;
         int yNovo = 0;
-        /** A variaavel aNovo serve para pesquisar pelos agentes que 
-         * encontramos coa  vecinhanca de moore */
+        /** A variavel aNovo serve para pesquisar pelos agentes que 
+         * encontramos com vezinhanca de moore */
         int aNovo = 0;
 
-        /** Pesquisamos os agentes na nosa struct de agentes para encontrar co
+        /** Pesquisamos os agentes na nossa struct de agentes para encontrar com
          *  x e o y dos agentes da struc os agentes na posicao da grelha x e y*/
         for (int na = 0; na < nagents - 1; na++) {
-            /**actualicamos as variaveis coas posicoes que precisamos para
-             *  realicar os movementos */
+            /**actualizamos as variaveis com as posicoes que precisamos para
+             *  realizar os movimentos */
             xPrincipal = agents[na].x;
             yPrincipal = agents[na].y;
             xNovo = agents[na].x;
             yNovo = agents[na].y;
             /**typeA sera uma variavel usada para guardar o type dos agentes
-             *  que encontramos na nosa struct*/
+             *  que encontramos na nossa struct*/
             int typeA = 0;
-            /**inicialicamos a variavel toro para depois usala para a funcao
-             *  que realica o movemento toroidal*/
+            /**inicializamos a variavel toro para depois usala para a funcao
+             *  que realiza o movimento toroidal*/
             int toro = 0;
-            /**apagar e uma bandeira para realicar a actualizacao do agente que
+            /**apagar uma bandeira para realizar a actualizacao do agente que
              *  se vai a mexer, se movemos o agente sem apagar a posicao
              *  anterior ficaria duplicado na posicao que esta e na posicao
-             *  na que se mexeu*/
+             *  que se mexeu*/
             int apagar = 0;
-            /** move toma valor 3 para comecar a pesquisar na vecinhanca de 
+            /** move toma valor 3 para comecar a pesquisar na vezinhanca de 
              * moore na coordenada superior a onde o agente que pesquisa 
              * esta na grelha*/
             move = 3;
             /**variavel para guardar as letras de teclado que nos vamos a usar
              *  para mexer aos agentes playable*/
             int seta;
-            /** xyMexe serao as variaveis que nos mexeremos coas setas*/
+            /** xyMexe serao as variaveis que nos mexeremos com as setas*/
             int xMexe = 0;
             int yMexe = 0;
 
             /** Se o agente e controlavel mexeremos com as setas*/
             if (agents[na].ply == 1) {
-                /**Fazemos o while para fazer um loop no que so saldra se
-                 *  prememos as setas do pad*/
+                /**Fazemos o while para fazer um loop no que vai sair se
+                 *  premirmos as setas do pad*/
                 while (seta != 1 || seta != 2 || seta != 3 || seta != 4 ||
                         seta != 6 || seta != 7 || seta != 8 || seta != 9) {
-                    /**Fazemos um scanf para recolher a tecla premida 
+                    /**Fazemos um scanf para receber a tecla premida 
                      * do teclado*/
                     printf("Usa as setas do pad para moverte\n");
                     scanf("%d", &seta);
                     printf("Usa as setas do pad para moverte %d\n", seta);
                     /** Igualamos a posicao principal do agente que vamos a
-                     *  mexer coas setas, esta posicao sera a que mudaremos
-                     *  coas setas que nos premamos a north south est ou west*/
+                     *  mexer com as setas, esta posicao sera a que mudaremos
+                     *  com as setas que nos premimos a north south est ou west*/
                     xMexe = agents[na].x;
                     yMexe = agents[na].y;
                     switch (seta) {
@@ -341,12 +341,12 @@ int main(int argc, char **argv) {
                             yMexe--;
                             break;
                     }
-                    /**chamamos a funcao toroidal por se o noso agente que
-                     *  vamos a mexer esta nos bordes e ten que aparecer no
+                    /**chamamos a funcao toroidal por se o agente que
+                     *  vamos a mexer esta nas bordas e tem que aparecer no
                      *  lado contrario da grelha*/
                     toroidal(&xMexe, &yMexe, &toro, &na);
 
-                    /**Se a posicao a que nos vamos a mexer esta vacia 
+                    /**Se a posicao a que nos vamos a mexer esta vazia 
                      * guardamos a posicao nova do agente e igualamos apagar
                      *  a 1 para depois apagar a posicao principal do agente*/
                     if (world_get(w, xMexe, yMexe) == NULL) {
@@ -357,9 +357,9 @@ int main(int argc, char **argv) {
                     } else {
                         /**Se ha um agente na posicao na que nos vamos a mexer,
                          *  recorremos a struc de agentes para identificar o
-                         *  agente desa posicao*/
+                         *  agente dessa posicao*/
                         for (aNovo = 0; aNovo < nagents; aNovo++) {
-                            /**Depois, perguntamos se o agente da grelha ten 
+                            /**Depois, perguntamos se o agente da grelha tem 
                              * tipo distinto ao nosso agente*/
                             if (xMexe == agents[aNovo].x &&
                                     yMexe == agents[aNovo].y &&
@@ -386,22 +386,22 @@ int main(int argc, char **argv) {
                             }
                         }
                     }
-                    /**quando realicamos o movemento das setas, saimos dos for*/
+                    /**quando realizamos o movimento das setas, saimos dos for*/
                     goto movela;
                 }
             } else {
                 /**  Se o agente nao e controlavel faremos a IA*/
-                /**Realizamos a funcao de pesquisar en caracol sem pasar de 
+                /**Realizamos a funcao de pesquisar em caracol sem passar de 
                  * novo pelas posicoes ja pesquisadas*/
                 for (int i = 1; i <= ((config.xdim + config.ydim) / 4); i++) {
                     for (int j = 1; j <= 2; j++) {
-                        /**Coa variavel move pesquisara o raio do caracol para 
+                        /**Com a variavel move pesquisamos o raio do caracol para 
                          * aumentar ou diminuir a pesquisa no x e y*/
                         if (move == 4) {
                             move = 1;
                         } else move += 1;
                         /**Agora  so temos que mudar as posicoes para que 
-                         * realice bem a pesquisaF*/
+                         * realize bem a pesquisaF*/
                         for (int block = 1; block <= i; block++) {
                             switch (move) {
                                 case 1:
@@ -422,7 +422,7 @@ int main(int argc, char **argv) {
                             }
                             /**chamamos a funcao toroidal para pesquisar 
                              * tambem no outro lado da grelha se o agente
-                             * estuvera perto dos bordes*/
+                             * estiver perto das bordas*/
                             toroidal(&xNovo, &yNovo, &toro, &na);
                             /**Se a posicao pesquisada e distinta de null e que
                              *  ha um agente nessa posicao*/
@@ -430,8 +430,8 @@ int main(int argc, char **argv) {
                                 /**percorremos a nosa struct de agentes para 
                                  * encontrar o agente pesquisado*/
                                 for (aNovo = 0; aNovo < nagents; aNovo++) {
-                                    /**Se o tipo do agente e distinto o noso 
-                                     * teremos que fazer distintos movementos*/
+                                    /**Se o tipo do agente e distinto o nosso 
+                                     * temos que fazer movimentos distintos */
                                     if (xNovo == agents[aNovo].x &&
                                             yNovo == agents[aNovo].y &&
                                             agents[na].type != agents[aNovo].type) {
@@ -453,20 +453,20 @@ int main(int argc, char **argv) {
                     }
                 }
             }
-            /**movela e a onde o noso programa vai a ir quando pesquisemos 
-             * todo o que necesitamos nos for anteriores*/
+            /**moxela e a onde o nosso programa vai quando pesquisamos 
+             * tudo o que necessitamos nos for anteriores*/
 movela:
-            /**funcao que vai fazer todos os movementos da IA*/
+            /**funcao que vai fazer todos os movimentos da IA*/
             if (agents[na].ply == 0) {
                 distancia(&agents[na].x, &agents[na].y, agents[aNovo].x,
                         agents[aNovo].y, typeA, &agents[na].type, toro, w,
                         na, &apagar, agents, nagents);
             }
-            /**Uma vez realicados os movementos modificamos o agent que 
-             * meteremos no world coas novas posicoes e types*/
+            /**Uma vez realizados os movimentos modificamos o agent que 
+             * metemos no world com as novas posicoes e types*/
             AGENT *a1 = agent_new(agents[na].type, agents[na].ply, agents[na].id);
-            /**Se apagar e igual a 1 quuere dezir que o agente vaise a mover e 
-             * ten que apagar a sua posicao anterior para que nao seja
+            /**Se apagar e igual a 1 quuere dezir que o agente vaise mover e 
+             * tem que apagar a sua posicao anterior para que nao seja
              *  duplicado*/
             if (apagar == 1) {
                 world_apagar(w, xPrincipal, yPrincipal);
@@ -475,7 +475,7 @@ movela:
             world_put(w, agents[na].x, agents[na].y, (ITEM *) a1);
             printf("Pressione ENTER para o seguinte turno...");
             getchar();
-            /**Actualicamos o ecra do terminal ou da libreria*/
+            /**Actualicamos o ecra do terminal ou da biblioteca*/
             showworld_update(sw, w);
 
         }
@@ -487,7 +487,7 @@ movela:
 }
 
 /**
- * Funcao para leer as variaveis do ini.h
+ * Funcao para ler as variaveis do ini.h
  * @param user
  * @param section
  * @param name
@@ -590,11 +590,11 @@ unsigned int example_get_ag_info(void *w, unsigned int x, unsigned int y) {
 }
 
 /**
- *  Funcao toroidal, que basicamente o que fai e que se o agente esta numa
- *  posicao de qualqueira dos bordes o envia ao outro lado da grelha
+ *  Funcao toroidal, que basicamente o que vai e que se o agente esta numa
+ *  posicao de qualquer das bordas enviao para o outro lado da grelha
  * 
- *  tambem modifica a varievel toro que depois servira para saber a distancia
- *  entre dous agentes a traves da grelha toroidal
+ *  tambem modifica a varievel toro que depois servia para saber a distancia
+ *  entre dois agentes atraves da grelha toroidal
  * 
  * @param x 
  * @param y
@@ -658,7 +658,7 @@ void toroidal(int *x, int *y, int *toro, int *na) {
 }
 
 /**
- * MoveToroidal recolhe a posicao dos agentes a traves da gralha toroidal,
+ * MoveToroidal recebe a posicao dos agentes atraves da grelha toroidal,
  * dependendo da posicao enviara informacao a distancia para mexer para um
  * dos lados da grelha toroidalmente.
  * @param xN
@@ -673,8 +673,8 @@ void MoveToroidal(int xN, int yN, int xNovo, int yNovo, int *movein,
         int *movedir) {
 
     int dir = *movedir;
-    /** Se a posicao do x e y estan nos quatro bordes ou nas quatro diagonais 
-     * da grelha envia uma instruccao a distancia para que realize os
+    /** Se a posicao do x e y estan nos quatro bordas ou nas quatro diagonais 
+     * da grelha envia uma instruccao a distancia para que realiza as
      * diferentes direccoes*/
 
     if ((xN - xNovo > 10) || (xN - xNovo < -10)) {
@@ -693,41 +693,41 @@ void MoveToroidal(int xN, int yN, int xNovo, int yNovo, int *movein,
 }
 
 /**
- * Funcao que realica os movementos dos agentes mudando as variaveis,
- *  dependendo de se sao humanos, zombies ou se estan nos bordes para fazer
- *  movementos toroidais.
+ * Funcao que realiza os movimentos dos agentes mudando as variaveis,
+ *  dependendo de se sao humanos, zombies ou se estao nas bordas para fazer
+ *  movimentos toroidais.
  * 
  * Tambem realiza a infeccao dos zombies.
  * 
- * @note E uma funcao feia pero ao mesmo tempo funcional e funciona
+ * @note E uma funcao feia mas ao mesmo tempo funcional e funciona
  * perfeitamente
  * @param x coordenada x do noso agente
  * @param y coordenada y do noso agente
- * @param xNovo coordenada x do agente pesquisado coa vecinhanca de moore
- * @param yNovo coordenada y do agente pesquisado coa vecinhanca de moore
+ * @param xNovo coordenada x do agente pesquisado com a vezinhanca de moore
+ * @param yNovo coordenada y do agente pesquisado com a vezinhanca de moore
  * @param typeA type do nosso agente
  * @param agTypeAnt type do agente pesquisado pela v. moore
- * @param toro flag para saber se tamos numa posicao que realizaremos um 
- * movemento toroidal
+ * @param toro flag para saber se estamos numa posicao que realizaremos um 
+ * movimento toroidal
  * @param w o nosso world
- * @param na numero do agente noso na nossa struct
- * @param apagar flag para saber se o noso agente realizara movemento e 
- *  saber se teremos que apagar a sua antiga posicao
+ * @param na numero do agente nosso na nossa struct
+ * @param apagar flag para saber se o nosso agente realizara movimento e 
+ *  saber se teremos que apagar a sua posicao antiga 
  * @param agents apontador para a nossa struct
- * @param nagents numero de agentes para realicar a infeccao e mudanca de type
+ * @param nagents numero de agentes para realizar a infeccao e mudanca de type
  */
 
 void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
         AGENT_TYPE *agTypeAnt, int toro, WORLD *w, int na, int *apagar,
         struct agentID *agents, int nagents) {
-    /**Guardamos a posicao que vamos a mudar do noso agente*/
+    /**Guardamos a posicao que vamos a mudar do nosso agente*/
     int xN = *x;
     int yN = *y;
-    /**variavel que vai a fazer o movemento do humano ou do zombie para atacar
+    /**variavel que vai a fazer o movimento do humano ou do zombie para atacar
      *  ou fugir dependendo das distintas opcoes*/
     int movein = 1;
-    /**movedir vai indicar en que posicao da grelha esta o noso agente para 
-     * realicar os distintos movementos de forma toroidal*/
+    /**movedir vai indicar em que posicao da grelha esta o nosso agente para 
+     * realizar os distintos movimentos de forma toroidal*/
     int movedir = 4;
 
     MoveToroidal(xN, yN, xNovo, yNovo, &movein, &movedir);
@@ -737,13 +737,13 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
     }
 
     switch (movedir) {
-            /**Verificar en que borde toroidal esta
-             este esta no toroidal que movese na x*/
+            /**Verificar em que borda o toroidal esta
+             este esta no toroidal que se move na x*/
         case 0:
-            /**Movemento do Zombie*/
+            /**Movimento do Zombie*/
             if (typeA == 1) {
-                /**Move se o x e y do noso agente sao maiores ou menores que o
-                 *  agente pesquisado coa vecinhanca de moore*/
+                /**Move se o x e y do nosso agente sao maiores ou menores que o
+                 *  agente pesquisado com a vezinhanca de moore*/
                 if (xN > xNovo && yN > yNovo) {
                     xN += movein;
                     yN -= movein;
@@ -766,10 +766,10 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
                     yN += movein;
                 }
             } else {
-                /**Movemento do Humano*/
+                /**Movimento do Humano*/
 
-                /**Move se o x e y do noso agente sao maiores ou menores que o
-                 *  agente pesquisado coa vecinhanca de moore*/
+                /**Move se o x e y do nosso agente sao maiores ou menores que o
+                 *  agente pesquisado coa vezinhanca de moore*/
                 if (xN > xNovo && yN > yNovo) {
                     xN -= movein;
                     yN += movein;
@@ -793,13 +793,13 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
                 }
             }
             break;
-            /**Verificar en que borde toroidal esta
+            /**Verificar em que borda toroidal esta
             este esta no toroidal que movese na y*/
         case 1:
-            /**Movemento do Zombie*/
+            /**Movimento do Zombie*/
             if (typeA == 1) {
-                /**Move se o x e y do noso agente sao maiores ou menores que o
-                 *  agente pesquisado coa vecinhanca de moore*/
+                /**Move se o x e y do nosso agente sao maiores ou menores que o
+                 *  agente pesquisado coa vezinhanca de moore*/
                 if (xN > xNovo && yN > yNovo) {
                     xN -= movein;
                     yN += movein;
@@ -823,8 +823,8 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
                 }
             } else {
                 /**Movemento do Humano*/
-                /**Move se o x e y do noso agente sao maiores ou menores que o
-                 *  agente pesquisado coa vecinhanca de moore*/
+                /**Move se o x e y do nosso agente sao maiores ou menores que o
+                 *  agente pesquisado coa vezinhanca de moore*/
                 if (xN > xNovo && yN > yNovo) {
                     xN += movein;
                     yN -= movein;
@@ -848,13 +848,13 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
                 }
             }
             break;
-            /**Verificar en que borde toroidal esta
+            /**Verificar em que borda toroidal esta
             este esta no toroidal que movese na x e y no mesmo tempo*/
         case 2:
             /**Movemento do Zombie*/
             if (typeA == 1) {
-                /**Move se o x e y do noso agente sao maiores ou menores que o
-                 *  agente pesquisado coa vecinhanca de moore*/
+                /**Move se o x e y do nosso agente sao maiores ou menores que o
+                 *  agente pesquisado coa vezinhanca de moore*/
                 if (xN > xNovo && yN > yNovo) {
                     xN += movein;
                     yN += movein;
@@ -877,9 +877,9 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
                     yN += movein;
                 }
             } else {
-                /**Movemento do Humano*/
-                /**Move se o x e y do noso agente sao maiores ou menores que o
-                 *  agente pesquisado coa vecinhanca de moore*/
+                /**Movimento do Humano*/
+                /**Move se o x e y do nosso agente sao maiores ou menores que o
+                 *  agente pesquisado com a vezinhanca de moore*/
                 if (xN > xNovo && yN > yNovo) {
                     xN -= movein;
                     yN -= movein;
@@ -903,13 +903,13 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
                 }
             }
             break;
-            /**Verificar en que borde toroidal esta
+            /**Verificar em que borda toroidal esta
             caso que nao se mexa em toroidal*/
         case 4:
             /**Movemento do Zombie*/
             if (typeA == 1) {
-                /**Move se o x e y do noso agente sao maiores ou menores que o
-                 *  agente pesquisado coa vecinhanca de moore*/
+                /**Move se o x e y do nosso agente sao maiores ou menores que o
+                 *  agente pesquisado com a vezinhanca de moore*/
                 if (xN > xNovo && yN > yNovo) {
                     xN += movein;
                     yN += movein;
@@ -932,9 +932,9 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
                     yN += movein;
                 }
             } else {
-                /**Movemento do Humano*/
-                /**Move se o x e y do noso agente sao maiores ou menores que o
-                 *  agente pesquisado coa vecinhanca de moore*/
+                /**Movimento do Humano*/
+                /**Move se o x e y do nosso agente sao maiores ou menores que o
+                 *  agente pesquisado com a vezinhanca de moore*/
                 if (xN > xNovo && yN > yNovo) {
                     xN -= movein;
                     yN -= movein;
@@ -959,12 +959,12 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
             }
             break;
     }
-    /**Chamamos a funcao toroiidal para realicar movementos em toroidal se
-     *  fora preciso*/
+    /**Chamamos a funcao toroiidal para realizar movimentos em toroidal se
+     *  for preciso*/
     toroidal(&xN, &yN, &toro, &na);
 
 
-    /**Se a posicao a que queremos movernos esta vacia guardamos o x e o
+    /**Se a posicao a que nos queremos mover esta vazia guardamos o x e o
      *  y na nova posicao*/
     if (world_get(w, xN, yN) == NULL) {
 
@@ -973,13 +973,13 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
         *apagar = 1;
 
     } else {
-        /**Se a posicao a que vai moverse o agente esta ocupada por outro 
-         * agente temos que fazer umas comprobacoes*/
+        /**Se a posicao a que vai o agente esta ocupada por outro 
+         * agente temos que fazer umas comparacoes*/
         int aNovo;
-        /**buscamos o novo agente na nosa struct*/
+        /**procuramos o novo agente na nosa struct*/
         for (aNovo = 0; aNovo < nagents; aNovo++) {
-            /**Pergumtamos se o nosso agente e o encontrado tenhen
-             *  distinto type*/
+            /**Perguntamos se o nosso agente e o encontrado tem
+             *  diferente type*/
             if (xN == agents[aNovo].x && yN == agents[aNovo].y &&
                     agTypeAnt != agents[aNovo].type) {
                 /**Se o noso type e Zombie e o novo e humano infectamos*/
@@ -991,7 +991,7 @@ void distancia(int *x, int *y, int xNovo, int yNovo, int typeA,
                     /**Mudamos o type do agente con esta funcao*/
                     mudar_agent_type(agents[aNovo].type, (AGENT *) a2);
                     /**mandamos a informacao nova do agente a posicao da grelha
-                     *  na que estava ese mesmo*/
+                     *  na que estava esse mesmo*/
                     world_put(w, agents[aNovo].x, agents[aNovo].y, (ITEM *) a2);
                     free(a2);
 
